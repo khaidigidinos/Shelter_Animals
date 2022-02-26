@@ -1,0 +1,35 @@
+$ratios: 20, 25, 50, 80, 100
+
+@each $ratio in $ratios 
+  .w-#{$ratio}
+    width: $ratio * 1%
+
+
+@each $ratio in $ratios 
+  .h-#{$ratio} 
+    height: $ratio * 1%
+
+.label-input-wrapper 
+  margin-bottom: 10px
+  display: flex
+  flex-direction: column
+  align-items: center
+
+  input
+    width: 80%
+    margin-right: 0
+    border-radius: 8px
+    height: 20px
+  
+
+  label
+    color: black
+    padding: 8px
+  
+
+  select
+    width: 80%
+    margin-right: 0
+    border-radius: 8px
+    height: 25px
+  
