@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Index</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/fa/css/all.css">
+</head>
+<body>
+	<div class="container mt-1">
+		<header>
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb">
+			    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+			    <li class="breadcrumb-item active">Index Pagination Pages</li>
+			  </ol>
+			</nav>
+		</header>
+		<main>
+			<div class="container">
+				<div id="title">
+					<blockquote class="blockquote">
+					  <h2 class="mb-0">Search results</h2>
+					  <small class="text-muted">Order: Alphabetically by primary breed</small>
+					</blockquote>
+				</div>
+				<div id="content" class="mt-1">
+					<!-- Begin of results -->
+					<div id="results">
+						<!-- Contents will be filled here -->
+					</div>
+					<!-- End of results -->
+
+					<!-- Begin of bottom pagination -->
+					<nav aria-label="bottom-pagination">
+						<ul class="pagination pagination-sm justify-content-end" id="pagination-index">
+							<!-- Pagination will go here -->
+						</ul>
+					</nav>
+					<!-- End of bottom pagination -->
+				</div>
+			</div>
+		</main>
+		<footer>
+			
+		</footer>
+	</div>
+	<script src="array_data.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script>
+		let produceResult = (index) => {
+			let info = array_details[index]
+			let image = images[index][0]
+			let template = `
+			<div class="card">
+				<img src="${image}" class="card-img-top" alt="${info.name}">
+				<div class="card-body">
+					<h5 class="card-title">
+						<a href="detail.html?index=${index}">
+							${info.name}
+						</a>
+					</h5>
+					<p class="card-text">
+						<i class="fa fa-angle-right"></i> ${info.breed} ${info.second_breed.length > 0 ? 'mixed ' + info.second_breed : ''}<br>
+						${info.spayed_neutered === 'Yes' ? '<i class="fa fa-angle-right"></i> Spayed/Neutered<br>' : ''}
+						<i class="fa fa-angle-right"></i> ${info.sex} - ${info.age}<br>
+						<i class="fa fa-angle-right"></i> Animal ID: ${info.identification.id}
+					</p>
+				</div>
+				<div class="card-footer text-center">
+			      <a class="btn btn-outline-primary btn-sm" href="detail.html?index=${index}">View details</a>
+			    </div>
+			</div>
+			`
+			return template
+		}
+
+		let produceDeck = (from, to) => {
+			let content = ''
+			for(let i = from; i <= to; i++) content += produceResult(i)
+			let template = `<div class="card-deck mb-2">${content}</div>`
+			return template
+		}
+
+		let size = 2
+		let currentIndex = 0
+
+		let buildPagination = (index) => {
+			
+
+			let load_button = `<li class="page-item ${index === array_details.length / size - 1 ? 'disabled' : ''}">
+							<a class="page-link" href="#!" onclick="loadMore()">Load More</a>
+						</li>`
+			
+			currentIndex = index
+			return load_button
+		}
+
+		let changePagination = (index) => {
+			$('#pagination-index').empty()
+			$('#pagination-index').append(buildPagination(index))
+			$('#results').empty()
+			$('#results').append(produceDeck(currentIndex * size, currentIndex * size + 1))
+		}
+
+	
+
+		let loadMore = () => {
+			$('#pagination-index').empty()
+			$('#pagination-index').append(buildPagination(currentIndex + 1))
+			//$('#results').empty()
+			$('#results').append(produceDeck(currentIndex * size, currentIndex * size + 1))
+		}
+
+		$('#pagination-index').append(buildPagination(currentIndex))
+		$('#results').append(produceDeck(currentIndex * size, currentIndex * size + 1)) 
+
+	</script>
+</body>
+</html>
